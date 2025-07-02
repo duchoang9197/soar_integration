@@ -1,0 +1,40 @@
+type: action
+definition:
+  title: Gọi Akamai API
+  description: Gọi API Akamai sử dụng EdgeGrid
+  display_group: Akamai
+  namespace: tools.akamai
+  name: call_api
+  secrets:
+    - name: akamai
+      keys:
+        - AKAMAI_CLIENT_TOKEN
+        - AKAMAI_CLIENT_SECRET
+        - AKAMAI_ACCESS_TOKEN
+        - AKAMAI_HOST
+  expects:
+    path:
+      type: str
+      description: Đường dẫn API (ví dụ: /identity-management/v3/user-profile)
+    method:
+      type: str
+      description: Phương thức HTTP (GET, POST, v.v.)
+    headers:
+      type: dict
+      description: Headers bổ sung
+    params:
+      type: dict
+      description: Tham số truy vấn
+    body:
+      type: dict
+      description: Dữ liệu gửi đi
+  steps:
+    - ref: call_api
+      action: integrations.akamai.call_akamai_api
+      args:
+        path: ${{ inputs.path }}
+        method: ${{ inputs.method }}
+        headers: ${{ inputs.headers }}
+        params: ${{ inputs.params }}
+        body: ${{ inputs.body }}
+  returns: ${{ steps.call_api.result }}
